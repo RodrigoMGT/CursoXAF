@@ -28,13 +28,8 @@ namespace CursoXAF.Module.BusinessObjects
             : base(session)
         {
         }
-        public override void AfterConstruction()
-        {
-            base.AfterConstruction();
-            Visible = true;
-            FechaCreacion = DateTime.Today;
-            // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
-        }
+
+        #region Propiedades
         private string _Nombre;
         [XafDisplayName("Ingresa el nombre del País"), ToolTip("Ingresa el nombre del País")]
         //[ModelDefault("EditMask", "(000)-00"), Index(0), VisibleInListView(false)]
@@ -92,14 +87,24 @@ namespace CursoXAF.Module.BusinessObjects
             get { return _Imagen; }
             set { SetPropertyValue(nameof(Imagen), ref _Imagen, value); }
         }
+        #endregion
 
+        #region Asociaciones
 
+        [Association("Pais-Recursos")]
+        public XPCollection<Recursos_Pais> Recursos
+        {
+            get { return GetCollection<Recursos_Pais>(nameof(Recursos)); }
+        }
+        #endregion
 
-
-        //[Action(Caption = "My UI Action", ConfirmationMessage = "Are you sure?", ImageName = "Attention", AutoCommit = true)]
-        //public void ActionMethod() {
-        //    // Trigger a custom business logic for the current record in the UI (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112619.aspx).
-        //    this.PersistentProperty = "Paid";
-        //}
+        #region Mrtodos
+        public override void AfterConstruction()
+        {
+            base.AfterConstruction();
+            Visible = true;
+            FechaCreacion = DateTime.Today;
+        }
+        #endregion
     }
 }

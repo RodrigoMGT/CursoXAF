@@ -109,24 +109,24 @@ namespace CursoXAF.Module.DatabaseUpdate {
 
             List<string> _listadoIdiomas = new List<string>() { "Portugués", "Italiano", "Aleman", "Chino" };
 
-            for(int i=0; i < _listadoIdiomas.Count; i++)
-            {
-                var otraCosa = i;
-                var otro2 = _listadoIdiomas[i];
-            }
+            //for(int i=0; i < _listadoIdiomas.Count; i++)
+            //{
+            //    var otraCosa = i;
+            //    var otro2 = _listadoIdiomas[i];
+            //}
 
             foreach (var cadaIdioma in _listadoIdiomas)
             {
-                var algo = cadaIdioma;
-                //Catalogo_Idioma idiomaAcrear = ObjectSpace.FirstOrDefault<Catalogo_Idioma>(u => u.Nombre == cadaIdioma);
-                //if (idiomaAcrear == null)
-                //{
-                //    idiomaAcrear = ObjectSpace.CreateObject<Catalogo_Idioma>();
-                //    idiomaAcrear.Nombre = cadaIdioma;
-                //    idiomaAcrear.Visible = false;
+                //var algo = cadaIdioma;
+                Catalogo_Idioma idiomaAcrear = ObjectSpace.FirstOrDefault<Catalogo_Idioma>(u => u.Nombre == cadaIdioma);
+                if (idiomaAcrear == null)
+                {
+                    idiomaAcrear = ObjectSpace.CreateObject<Catalogo_Idioma>();
+                    idiomaAcrear.Nombre = cadaIdioma;
+                    idiomaAcrear.Visible = false;
 
-                //    idiomaAcrear.Save();
-                //}
+                    idiomaAcrear.Save();
+                }
             }
 
 

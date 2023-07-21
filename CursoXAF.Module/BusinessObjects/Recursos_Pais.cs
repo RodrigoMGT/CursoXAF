@@ -20,16 +20,22 @@ namespace CursoXAF.Module.BusinessObjects
     //[DefaultListViewOptions(MasterDetailMode.ListViewOnly, false, NewItemRowPosition.None)]
     //[Persistent("DatabaseTableName")]
     // Specify more UI options using a declarative approach (https://documentation.devexpress.com/#eXpressAppFramework/CustomDocument112701).
-    public class Catalogo_Idioma : XPObject
-    { // Inherit from a different class to provide a custom primary key, concurrency and deletion behavior, etc. (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument113146.aspx).
-        // Use CodeRush to create XPO classes and properties with a few keystrokes.
-        // https://docs.devexpress.com/CodeRushForRoslyn/118557
-        public Catalogo_Idioma(Session session)
+    public class Recursos_Pais : BaseObject
+    { 
+        public Recursos_Pais(Session session)
             : base(session)
         {
         }
-
         #region Propiedades
+
+        private Pais _Pais;
+        [Association("Pais-Recursos")]
+        [RuleRequiredField(DefaultContexts.Save)]
+        public Pais Pais
+        {
+            get { return _Pais; }
+            set { SetPropertyValue(nameof(Pais), ref _Pais, value); }
+        }
 
         private string _Nombre;
         [RuleRequiredField(DefaultContexts.Save)]
@@ -39,11 +45,32 @@ namespace CursoXAF.Module.BusinessObjects
             set { SetPropertyValue(nameof(Nombre), ref _Nombre, value); }
         }
 
+        private string _Descripcion;
+        [XafDisplayName("Descripción")]
+        [Size(SizeAttribute.Unlimited)]
+        public string Descripcion
+        {
+            get { return _Descripcion; }
+            set { SetPropertyValue(nameof(Descripcion), ref _Descripcion, value); }
+        }
+
+        private FileData _Archivo;
+        public FileData Archivo
+        {
+            get { return _Archivo; }
+            set { SetPropertyValue(nameof(Archivo), ref _Archivo, value); }
+        }
+
+        private string _UrlArchivo;
+        [XafDisplayName("Url Archivo")]
+        [Size(SizeAttribute.Unlimited)]
+        public string UrlArchivo
+        {
+            get { return _UrlArchivo; }
+            set { SetPropertyValue(nameof(UrlArchivo), ref _UrlArchivo, value); }
+        }
 
         private bool _Visible;
-        //[XafDisplayName("Ingresa el Visible del País"), ToolTip("Ingresa el Visible del País")]
-        //[ModelDefault("EditMask", "(000)-00"), Index(0), VisibleInListView(false)]
-        //[Persistent("DatabaseColumnName"), RuleRequiredField(DefaultContexts.Save)]
         public bool Visible
         {
             get { return _Visible; }
@@ -51,9 +78,6 @@ namespace CursoXAF.Module.BusinessObjects
         }
 
         private int _Orden;
-        //[XafDisplayName("Ingresa el Orden del País"), ToolTip("Ingresa el Orden del País")]
-        //[ModelDefault("EditMask", "(000)-00"), Index(0), OrdenInListView(false)]
-        //[Persistent("DatabaseColumnName"), RuleRequiredField(DefaultContexts.Save)]
         public int Orden
         {
             get { return _Orden; }
@@ -72,7 +96,7 @@ namespace CursoXAF.Module.BusinessObjects
             base.AfterConstruction();
 
             this.Visible = true;
-            var ultimoRegistro = Session.Query<Catalogo_Idioma>().OrderByDescending(p => p.Orden).FirstOrDefault();
+            var ultimoRegistro = Session.Query<Recursos_Pais>().OrderByDescending(p => p.Orden).FirstOrDefault();
             if (ultimoRegistro == null)
                 this.Orden = 1;
             else
@@ -80,8 +104,7 @@ namespace CursoXAF.Module.BusinessObjects
 
         }
 
-
-        [Action(Caption = "Activar / Desactivar", ConfirmationMessage = "Deseas cambiar el Campo Visible?", AutoCommit = true)]
+        [Action(Caption = "Activar / Desactivar", AutoCommit = true)]
         public void ActivarDesactivar()
         {
             this.Visible = !this.Visible;
@@ -93,6 +116,5 @@ namespace CursoXAF.Module.BusinessObjects
 
         }
         #endregion
-
     }
 }
